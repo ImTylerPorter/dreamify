@@ -3,6 +3,7 @@ import { OPENAI_API_KEY } from '$env/static/private'; // Import server-side env 
 
 const openai = new OpenAI({
   apiKey: OPENAI_API_KEY,
+  baseURL: "https://api.x.ai/v1",
 });
 
 export async function interpretDream(dreamContent: string) {
@@ -18,9 +19,10 @@ export async function interpretDream(dreamContent: string) {
           content: `Please interpret this dream: ${dreamContent}`
         }
       ],
-      model: "gpt-4-turbo-preview",
+      model: "grok-beta",
     });
 
+    console.log(completion)
     return completion.choices[0].message.content;
   } catch (error) {
     console.error('Error interpreting dream:', error);

@@ -10,19 +10,17 @@
 	let dreamContent = $state('');
 	let isLoading = $state(false);
 
-	// This function should handle the form submission
 	function handleSubmit(event: SubmitEvent) {
 		isLoading = true;
 	}
 
-	// This function should handle the result of the form submission
-	function handleResult(event: { result: any }) {
-		if (event.result.type === 'success' && event.result.data?.dream) {
-			onDreamInterpreted(event.result.data.dream);
+	function handleResult({ result }: { result: any }) {
+		if (result.type === 'success' && result.data?.dream) {
+			onDreamInterpreted(result.data.dream);
 			dreamTitle = '';
 			dreamContent = '';
-		} else if (event.result.type === 'failure') {
-			onInterpretationError(event.result.data?.error || 'Failed to submit dream');
+		} else if (result.type === 'failure') {
+			onInterpretationError(result.data?.error || 'Failed to submit dream');
 		}
 		isLoading = false;
 	}
@@ -39,8 +37,10 @@
 	}}
 	class="space-y-6"
 >
-	<div>
-		<label for="dreamTitle" class="block text-sm font-medium text-purple-200"> Dream Title </label>
+	<div class="space-y-2">
+		<label for="dreamTitle" class="block text-sm font-medium text-purple-200/90">
+			Dream Title
+		</label>
 		<Input
 			id="dreamTitle"
 			name="title"
@@ -50,8 +50,8 @@
 		/>
 	</div>
 
-	<div>
-		<label for="dreamContent" class="block text-sm font-medium text-purple-200">
+	<div class="space-y-2">
+		<label for="dreamContent" class="block text-sm font-medium text-purple-200/90">
 			Dream Description
 		</label>
 		<Textarea
@@ -65,10 +65,17 @@
 
 	<Button type="submit" disabled={isLoading} variant={isLoading ? 'loading' : 'default'}>
 		{#if isLoading}
-			<span class="inline-block animate-spin mr-2">⭐</span>
-			Interpreting Dream...
+			<div class="flex items-center justify-center space-x-2">
+				<span
+					class="inline-block w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"
+				></span>
+				<span>Interpreting Dream...</span>
+			</div>
 		{:else}
-			Interpret Dream
+			<span class="flex items-center justify-center space-x-2">
+				<span>✨</span>
+				<span>Interpret Dream</span>
+			</span>
 		{/if}
 	</Button>
 </form>

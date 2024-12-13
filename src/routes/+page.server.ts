@@ -18,6 +18,7 @@ export const actions = {
     try {
       // Get dream interpretation from OpenAI
       const interpretation = await interpretDream(content)
+      console.log(interpretation, 'interperets')
       const mood = 'neutral' // Placeholder for now
       // Convert null to undefined
 
