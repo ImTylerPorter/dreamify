@@ -1,11 +1,23 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 
-	export let value = '';
-	export let rows = 6;
-	export let className = '';
-	export let placeholder = '';
-	export let required = false;
+	interface Props {
+		value?: string;
+		rows?: number;
+		className?: string;
+		placeholder?: string;
+		required?: boolean;
+		[key: string]: any
+	}
+
+	let {
+		value = $bindable(''),
+		rows = 6,
+		className = '',
+		placeholder = '',
+		required = false,
+		...rest
+	}: Props = $props();
 </script>
 
 <textarea
@@ -21,5 +33,5 @@
 		'hover:border-purple-500/30 indent-1.5',
 		className
 	)}
-	{...$$restProps}
+	{...rest}
 ></textarea>

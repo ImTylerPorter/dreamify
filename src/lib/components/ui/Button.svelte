@@ -1,10 +1,15 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 
-	export let type: 'button' | 'submit' | 'reset' = 'button';
-	export let disabled = false;
-	export const variant: 'default' | 'loading' = 'default';
-	export let className = '';
+	interface Props {
+		type?: 'button' | 'submit' | 'reset';
+		disabled?: boolean;
+		className?: string;
+		children?: import('svelte').Snippet;
+		[key: string]: any;
+	}
+
+	let { type = 'button', disabled = false, className = '', children, ...rest }: Props = $props();
 </script>
 
 <button
@@ -19,9 +24,9 @@
 		'transform transition-transform active:scale-[0.98]',
 		className
 	)}
-	{...$$restProps}
+	{...rest}
 >
 	<span class="relative z-10">
-		<slot />
+		{@render children?.()}
 	</span>
 </button>

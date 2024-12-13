@@ -1,11 +1,23 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 
-	export let type = 'text';
-	export let value = '';
-	export let className = '';
-	export let placeholder = '';
-	export let required = false;
+	interface Props {
+		type?: string;
+		value?: string;
+		className?: string;
+		placeholder?: string;
+		required?: boolean;
+		[key: string]: any
+	}
+
+	let {
+		type = 'text',
+		value = $bindable(''),
+		className = '',
+		placeholder = '',
+		required = false,
+		...rest
+	}: Props = $props();
 </script>
 
 <input
@@ -21,5 +33,5 @@
 		'hover:border-purple-500/30 indent-1.5',
 		className
 	)}
-	{...$$restProps}
+	{...rest}
 />
