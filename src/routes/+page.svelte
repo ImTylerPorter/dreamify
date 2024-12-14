@@ -14,8 +14,8 @@
 	let { data } = $props();
 	let { user } = data;
 
-	const modalOpen = writable(false);
-	const isLogin = writable(true);
+	let modalOpen = $state(false);
+	let isLogin = $state(true);
 
 	function handleDreamInterpreted(dream: Dream) {
 		error = null;
@@ -28,11 +28,11 @@
 	}
 
 	function handleToggleModal() {
-		$modalOpen = !$modalOpen;
+		modalOpen = !modalOpen;
 	}
 
 	function handleToggleLoginSignup() {
-		$isLogin = !$isLogin;
+		isLogin = !isLogin;
 	}
 
 	async function handleAuth(formData: FormData) {
@@ -95,11 +95,11 @@
 </div>
 
 <!-- Modal -->
-{#if $modalOpen}
+{#if modalOpen}
 	<LoginSignupModal
 		onToggleModal={handleToggleModal}
 		onToggleLoginSignup={handleToggleLoginSignup}
 		onHandleLogin={handleAuth}
-		isLogin={$isLogin}
+		{isLogin}
 	/>
 {/if}

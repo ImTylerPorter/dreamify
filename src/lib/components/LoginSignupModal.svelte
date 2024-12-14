@@ -1,14 +1,15 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import { Mail, Lock, UserPlus } from 'lucide-svelte';
 	import Input from './ui/Input.svelte';
 	import Button from './ui/Button.svelte';
 	import ErrorDisplay from './ErrorDisplay.svelte';
 
-	export let isLogin: boolean;
-	export let onToggleModal: () => void;
-	export let onToggleLoginSignup: () => void;
-	export let onHandleLogin: (formData: FormData) => void;
+	const { isLogin, onToggleModal, onToggleLoginSignup, onHandleLogin } = $props<{
+		isLogin: boolean;
+		onToggleModal: () => void;
+		onToggleLoginSignup: () => void;
+		onHandleLogin: (formData: FormData) => void;
+	}>();
 
 	let email = '';
 	let password = '';
