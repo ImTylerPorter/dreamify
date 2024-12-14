@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+
 	import { writable } from 'svelte/store';
 	import DreamForm from '$lib/components/DreamForm.svelte';
 	import DreamDisplay from '$lib/components/DreamDisplay.svelte';
@@ -12,7 +14,6 @@
 	let { data } = $props();
 	let { user } = data;
 
-	// Manage modal open/close and login/signup toggle states
 	const modalOpen = writable(false);
 	const isLogin = writable(true);
 
@@ -32,6 +33,28 @@
 
 	function handleToggleLoginSignup() {
 		$isLogin = !$isLogin;
+	}
+
+	async function handleAuth(formData: FormData) {
+		try {
+			// Send POST request to the server
+			const response = await fetch($page.url.pathname, {
+				method: 'POST',
+				body: formData
+			});
+			const result = await response.json();
+			if (result.success) {
+				// If successful, toggle modal and handle session
+				console.log('Session:', result.session);
+				handleToggleModal();
+			} else {
+				// Display error from the server
+				error = result.error || 'An unknown error occurred.';
+			}
+		} catch (err) {
+			// Handle unexpected errors
+			error = 'An error occurred while processing your request.';
+		}
 	}
 </script>
 
@@ -76,6 +99,7 @@
 	<LoginSignupModal
 		onToggleModal={handleToggleModal}
 		onToggleLoginSignup={handleToggleLoginSignup}
+		onHandleLogin={handleAuth}
 		isLogin={$isLogin}
 	/>
 {/if}

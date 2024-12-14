@@ -1,12 +1,12 @@
-export type Dream = {
+export interface Dream {
   id?: string;
   userId: string;
   title: string;
   content: string;
-  interpretation?: string | null; // Allow null
-  mood?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  interpretation?: string | null;
+  mood?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export type DreamInterpretation = {

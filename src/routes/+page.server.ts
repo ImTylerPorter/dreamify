@@ -1,61 +1,49 @@
-// src/routes/dashboard/+page.server.ts (or wherever your action is defined)
-import { interpretDream } from '$lib/openai'
-import type { Dream } from '$lib/types'
-import { fail } from '@sveltejs/kit'
+import { interpretDream } from '$lib/openai';
+import type { Dream } from '$lib/types';
+import { error } from '@sveltejs/kit';
+import { handleAddDream, handleLogin } from '$lib/server/serverHandlers';
 
 export const actions = {
   default: async (event) => {
-    const { request, locals } = event
+    const { request, locals } = event;
 
-    const data = await request.formData()
-    const title = data.get('title')?.toString()
-    const content = data.get('content')?.toString()
+    // Parse form data once
+    const data = await request.formData();
 
-    if (!title || !content) {
-      return fail(400, { error: 'Title and content are required' })
+    // Check if the form submission is for login/signup
+    const isLogin = data.get('isLogin');
+    const email = data.get('email');
+    const password = data.get('password');
+    if (isLogin !== null || (email && password)) {
+      return await handleLogin(data, locals);
     }
 
-    try {
-      // Get dream interpretation from OpenAI
-      const interpretation = await interpretDream(content)
-      console.log(interpretation, 'interperets')
-      const mood = 'neutral' // Placeholder for now
-      // Convert null to undefined
+    // Check if the form submission is for adding a dream
+    const title = data.get('title')?.toString();
+    const content = data.get('content')?.toString();
 
-
-      // Retrieve the authenticated user
-      const { user } = await locals.safeGetSession()
+    if (title && content) {
+      const { user } = await locals.safeGetSession();
 
       if (!user) {
-        return fail(401, { error: 'User not authenticated' })
+        throw error(401, 'User not authenticated.');
       }
 
-      // Construct the dream object
+      const interpretation = await interpretDream(content);
       const dream: Dream = {
         title,
         content,
         interpretation,
-        mood,
+        mood: 'neutral',
         userId: user.id,
         createdAt: new Date(),
         updatedAt: new Date(),
-      }
+      };
 
-      // Insert the dream into Supabase
-      const { data: savedDream, error } = await locals.supabase
-        .from('dreams')
-        .insert(dream)
-        .select()
-        .single()
-
-      if (error) throw error
-
-      return { dream: savedDream }
-    } catch (error) {
-      console.error('Error processing dream:', error)
-      return fail(500, {
-        error: error instanceof Error ? error.message : 'Failed to process dream',
-      })
+      const savedDream = await handleAddDream(dream);
+      return { dream: savedDream };
     }
+
+    throw error(400, 'Invalid form submission.');
   },
-}
+};

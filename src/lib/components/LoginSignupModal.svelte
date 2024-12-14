@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { Mail, Lock, UserPlus } from 'lucide-svelte';
 	import Input from './ui/Input.svelte';
 	import Button from './ui/Button.svelte';
@@ -7,6 +8,7 @@
 	export let isLogin: boolean;
 	export let onToggleModal: () => void;
 	export let onToggleLoginSignup: () => void;
+	export let onHandleLogin: (formData: FormData) => void;
 
 	let email = '';
 	let password = '';
@@ -19,38 +21,28 @@
 	}
 
 	// Handle form submission
-	async function handleSubmit(event: Event): Promise<void> {
+	function handleSubmit(event: Event) {
 		event.preventDefault();
+		const formData = new FormData(event.target as HTMLFormElement);
 
-		if (!email || !password) {
-			error = 'Email and password are required.';
-			return;
-		}
-
-		if (!isLogin && password !== confirmPassword) {
-			error = 'Ensure passwords match';
-			return;
-		}
-
-		// Mock server interaction for demo purposes
-		try {
-			console.log('Submitting:', { email, password, isLogin });
-			onToggleModal(); // Close modal after submission
-		} catch (err) {
-			error = 'A network error occurred.';
-		}
+		// Include isLogin toggle in the form data
+		formData.append('isLogin', `${isLogin}`);
+		onHandleLogin(formData);
 	}
 </script>
 
-<div class="fixed inset-0 flex items-center justify-center z-50">
-	<button
-		type="button"
-		class="absolute inset-0 bg-gray-800/75"
+<div class="fixed inset-0 z-50 flex items-center justify-center">
+	<!-- Backdrop -->
+	<div
+		class="absolute inset-0 bg-gray-800/75 z-40 pointer-events-auto"
 		aria-hidden="true"
 		onclick={onToggleModal}
-	></button>
+	></div>
 
-	<div class="bg-gray-900 border border-gray-700 rounded-lg shadow-lg max-w-md w-full p-6 modal">
+	<!-- Modal Content -->
+	<div
+		class="relative bg-gray-900 border border-gray-700 rounded-lg shadow-lg max-w-md w-full p-6 z-50 pointer-events-auto"
+	>
 		<header class="flex justify-between items-center mb-4">
 			<h2 id="modal-title" class="text-lg font-semibold text-gray-100">
 				{isLogin ? 'Login' : 'Sign Up'}
@@ -74,7 +66,7 @@
 						<span>Email</span>
 					</div>
 				</label>
-				<Input id="email" type="email" bind:value={email} oninput={clearError} />
+				<Input id="email" type="email" name="email" bind:value={email} oninput={clearError} />
 			</div>
 			<div>
 				<label for="password" class="block text-sm font-medium text-gray-200">
@@ -83,7 +75,13 @@
 						<span>Password</span>
 					</div>
 				</label>
-				<Input id="password" type="password" bind:value={password} oninput={clearError} />
+				<Input
+					id="password"
+					type="password"
+					name="password"
+					bind:value={password}
+					oninput={clearError}
+				/>
 			</div>
 			{#if !isLogin}
 				<div>
