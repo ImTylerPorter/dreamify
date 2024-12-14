@@ -53,9 +53,6 @@
 		"drizzle-orm": "^0.38.0",
 		"lucide-svelte": "^0.468.0",
 		"openai": "^4.76.2",
-		"pg": "^8.13.1",
-		"plotly.js": "^2.35.2",
-		"plotly.js-dist": "^2.35.2",
-		"plotly.js-dist-min": "^2.35.2"
+		"pg": "^8.13.1"
 	}
 }

@@ -1,45 +1,20 @@
-<script lang="ts">
+<script>
 	import '../app.css';
-	import type { Snippet } from 'svelte';
 	import { invalidate } from '$app/navigation';
+	import { onMount } from 'svelte';
 
-	interface SupabaseSession {
-		expires_at?: number;
-	}
+	let { data, children } = $props();
+	let { session, supabase } = $derived(data);
 
-	interface Props {
-		children?: Snippet;
-		data?: {
-			session?: SupabaseSession;
-			supabase: {
-				auth: {
-					onAuthStateChange: (
-						callback: (event: string, session: SupabaseSession | null) => void
-					) => {
-						data: {
-							subscription: {
-								unsubscribe: () => void;
-							};
-						};
-					};
-				};
-			};
-		};
-	}
+	onMount(() => {
+		const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
+			if (newSession?.expires_at !== session?.expires_at) {
+				invalidate('supabase:auth');
+			}
+		});
 
-	let { children, data: propsData }: Props = $props();
-
-	$effect(() => {
-		if (propsData?.supabase) {
-			const { data } = propsData.supabase.auth.onAuthStateChange((_, newSession) => {
-				if (newSession?.expires_at !== propsData?.session?.expires_at) {
-					invalidate('supabase:auth');
-				}
-			});
-
-			return () => data.subscription.unsubscribe();
-		}
+		return () => data.subscription.unsubscribe();
 	});
 </script>
 
-{@render children?.()}
+{@render children()}

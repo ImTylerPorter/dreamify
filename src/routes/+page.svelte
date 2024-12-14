@@ -13,6 +13,8 @@
 	let { data } = $props();
 	let { user } = data;
 
+	console.log(user);
+
 	let modalOpen = $state(false);
 	let isLogin = $state(true);
 
@@ -43,7 +45,7 @@
 			});
 			const result = await response.json();
 			console.log(result, 'result');
-			if (result.data.success) {
+			if (result.status === 200) {
 				// If successful, toggle modal and handle session
 				console.log('Session:', result.session);
 				handleToggleModal();

@@ -48,7 +48,6 @@ export async function handleLogin(
   const email = data.get('email')?.toString();
   const password = data.get('password')?.toString();
   const isLogin = data.get('isLogin') === 'true';
-  console.log(isLogin)
 
   if (!email || !password) {
     throw error(400, 'Email and password are required.');
