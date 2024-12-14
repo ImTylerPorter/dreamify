@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	import { writable } from 'svelte/store';
 	import DreamForm from '$lib/components/DreamForm.svelte';
 	import DreamDisplay from '$lib/components/DreamDisplay.svelte';
 	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
@@ -43,7 +42,8 @@
 				body: formData
 			});
 			const result = await response.json();
-			if (result.success) {
+			console.log(result, 'result');
+			if (result.data.success) {
 				// If successful, toggle modal and handle session
 				console.log('Session:', result.session);
 				handleToggleModal();
