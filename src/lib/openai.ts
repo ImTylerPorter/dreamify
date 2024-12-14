@@ -6,26 +6,46 @@ const openai = new OpenAI({
   baseURL: "https://api.x.ai/v1",
 });
 
-export async function interpretDream(dreamContent: string) {
+export async function interpretDreamWithMood(dreamContent: string) {
   try {
     const completion = await openai.chat.completions.create({
       messages: [
         {
           role: "system",
-          content: "You are a knowledgeable dream interpreter. Analyze dreams and provide meaningful interpretations based on common dream symbols, psychology, and cultural contexts. Be insightful but avoid overly mystical interpretations."
+          content: "You are a knowledgeable dream interpreter. Provide brief interpretations focusing on key symbols and psychology. Avoid lengthy explanations or mystical elements."
         },
         {
           role: "user",
-          content: `Please interpret this dream: ${dreamContent}`
+          content: `Please interpret this dream concisely: ${dreamContent}`
         }
       ],
       model: "grok-beta",
     });
 
-    console.log(completion)
-    return completion.choices[0].message.content;
+    // Safely extract interpretation
+    const interpretation = completion?.choices?.[0]?.message?.content?.trim() || 'No interpretation available.';
+
+    const moodPrompt = await openai.chat.completions.create({
+      messages: [
+        {
+          role: "system",
+          content: "You are an expert in emotional analysis based on textual content. Provide a single-word mood description from the following text."
+        },
+        {
+          role: "user",
+          content: `Dream text: ${dreamContent}`
+        }
+      ],
+      model: "grok-beta",
+    });
+
+    // Safely extract mood
+    const mood = moodPrompt?.choices?.[0]?.message?.content?.trim() || 'Unknown mood';
+
+    return { interpretation, mood };
   } catch (error) {
-    console.error('Error interpreting dream:', error);
-    throw error;
+    console.error('Error interpreting dream and detecting mood:', error);
+    throw new Error('Failed to interpret dream and detect mood.');
   }
 }
+

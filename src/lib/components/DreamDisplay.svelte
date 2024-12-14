@@ -1,7 +1,11 @@
 <script lang="ts">
 	import { fade, fly } from 'svelte/transition';
+	import { marked } from 'marked'; // Import the markdown parser
 
 	const { dream } = $props();
+
+	// Convert Markdown to HTML
+	let interpretationHTML = dream?.interpretation ? marked(dream.interpretation) : '';
 </script>
 
 <div class="mt-8 relative group" in:fly={{ y: 20, duration: 500, delay: 200 }} out:fade>
@@ -14,7 +18,13 @@
 		>
 			Interpretation
 		</h2>
-		<p class="text-purple-100/90 leading-relaxed">{dream.interpretation}</p>
+		<!-- Conditional rendering for {@html} -->
+		{#if interpretationHTML}
+			<div class="theDream text-purple-100/90 leading-relaxed">{@html interpretationHTML}</div>
+		{:else}
+			<p class="text-purple-100/90 leading-relaxed">No interpretation available.</p>
+		{/if}
+
 		{#if dream.mood}
 			<div class="mt-4 flex items-center space-x-2 text-sm text-purple-300/80">
 				<span class="inline-block w-2 h-2 rounded-full bg-purple-400/50"></span>

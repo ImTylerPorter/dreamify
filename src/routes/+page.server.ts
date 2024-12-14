@@ -1,4 +1,4 @@
-import { interpretDream } from '$lib/openai';
+import { interpretDreamWithMood } from '$lib/openai';
 import type { Dream } from '$lib/types';
 import { error } from '@sveltejs/kit';
 import { handleAddDream, handleLogin } from '$lib/server/serverHandlers';
@@ -29,12 +29,12 @@ export const actions = {
         throw error(401, 'User not authenticated.');
       }
 
-      const interpretation = await interpretDream(content);
+      const { interpretation, mood } = await interpretDreamWithMood(content);
       const dream: Dream = {
         title,
         content,
         interpretation,
-        mood: 'neutral',
+        mood,
         userId: user.id,
         createdAt: new Date(),
         updatedAt: new Date(),

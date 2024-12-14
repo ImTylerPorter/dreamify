@@ -13,8 +13,6 @@
 	let { data } = $props();
 	let { user } = data;
 
-	console.log(user);
-
 	let modalOpen = $state(false);
 	let isLogin = $state(true);
 

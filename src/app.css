@@ -43,3 +43,53 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(139, 92, 246, 0.7);
 }
+
+/* Styles for interpreted dream */
+.theDream {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.theDream p {
+  margin-bottom: 1rem;
+}
+
+.theDream :where(ul, ol) {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.theDream li {
+  margin-bottom: 0.5rem;
+}
+
+.theDream blockquote {
+  margin: 1rem 0;
+  padding-left: 1rem;
+  border-left: 4px solid #a78bfa;
+  color: #d4d4d8;
+  font-style: italic;
+}
+
+.theDream :where(h1, h2, h3, h4, h5, h6) {
+  margin: 1rem 0 0.5rem;
+  color: #c4b5fd;
+  font-weight: bold;
+}
+
+.theDream pre {
+  background: #1e1e2e;
+  color: #d4d4d8;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.theDream code {
+  background: #2a2a40;
+  color: #e4e4ff;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.95rem;
+}
