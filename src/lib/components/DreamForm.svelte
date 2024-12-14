@@ -4,7 +4,7 @@
 	import Textarea from '$lib/components/ui/Textarea.svelte';
 	import { enhance } from '$app/forms';
 
-	const { onDreamInterpreted, onInterpretationError } = $props();
+	const { onToggleModal, onDreamInterpreted, onInterpretationError, user } = $props();
 
 	let dreamTitle = $state('');
 	let dreamContent = $state('');
@@ -23,6 +23,10 @@
 			onInterpretationError(result.data?.error || 'Failed to submit dream');
 		}
 		isLoading = false;
+	}
+
+	function toggleModal() {
+		onToggleModal();
 	}
 </script>
 
@@ -63,19 +67,28 @@
 		/>
 	</div>
 
-	<Button type="submit" disabled={isLoading} variant={isLoading ? 'loading' : 'default'}>
-		{#if isLoading}
-			<div class="flex items-center justify-center space-x-2">
-				<span
-					class="inline-block w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"
-				></span>
-				<span>Interpreting Dream...</span>
-			</div>
-		{:else}
-			<span class="flex items-center justify-center space-x-2">
+	{#if user}
+		<Button type="submit" disabled={isLoading} variant={isLoading ? 'loading' : 'default'}>
+			{#if isLoading}
+				<div class="flex items-center justify-center space-x-2">
+					<span
+						class="inline-block w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"
+					></span>
+					<span>Interpreting Dream...</span>
+				</div>
+			{:else}
+				<span class="flex items-center justify-center space-x-2">
+					<span>✨</span>
+					<span>Interpret Dream</span>
+				</span>
+			{/if}
+		</Button>
+	{:else}
+		<Button onclick={toggleModal}
+			><span class="flex items-center justify-center space-x-2">
 				<span>✨</span>
 				<span>Interpret Dream</span>
-			</span>
-		{/if}
-	</Button>
+			</span></Button
+		>
+	{/if}
 </form>

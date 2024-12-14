@@ -51,6 +51,7 @@
 		"@supabase/supabase-js": "^2.47.3",
 		"drizzle-kit": "^0.30.0",
 		"drizzle-orm": "^0.38.0",
+		"lucide-svelte": "^0.468.0",
 		"openai": "^4.76.2",
 		"pg": "^8.13.1",
 		"plotly.js": "^2.35.2",
