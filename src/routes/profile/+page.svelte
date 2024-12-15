@@ -7,7 +7,7 @@
 	import type { Profile } from '$lib/types.js';
 
 	let { data } = $props();
-	let { profile, stats } = data;
+	let { stats, profile } = data;
 
 	let updatedProfile = $state<Profile>({
 		id: profile?.id ?? '', // Fallback to empty string

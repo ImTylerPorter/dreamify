@@ -2,9 +2,10 @@
 	import '../app.css';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import Nav from '$lib/components/Nav.svelte';
 
 	let { data, children } = $props();
-	let { session, supabase } = $derived(data);
+	let { session, supabase, profile } = $derived(data);
 
 	onMount(() => {
 		const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
@@ -17,4 +18,7 @@
 	});
 </script>
 
-{@render children()}
+<div>
+	<Nav {profile} />
+	<slot {profile} />
+</div>

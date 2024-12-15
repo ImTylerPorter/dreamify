@@ -7,6 +7,7 @@
 	import type { Dream } from '$lib/types';
 	import LoginSignupModal from '$lib/components/LoginSignupModal.svelte';
 	import Logo from '$lib/components/Logo.svelte';
+	import LogoIcon from '$lib/components/LogoIcon.svelte';
 
 	let currentDream = $state<Dream | null>(null);
 	let error = $state<string | null>(null);
@@ -61,7 +62,8 @@
 <div class="min-h-screen bg-[#13111C] relative overflow-hidden">
 	<main class="container mx-auto px-4 py-16 relative z-10">
 		<div class="text-center mb-16 space-y-4">
-			<Logo />
+			<!-- <Logo /> -->
+			<LogoIcon />
 			<p class="text-xl text-purple-200/80">Simplify and amplify your dream interpretations</p>
 		</div>
 

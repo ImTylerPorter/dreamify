@@ -7,12 +7,9 @@ import { eq } from "drizzle-orm";
 export async function load({ locals }) {
   try {
     // Load user profile, sections and settings
-    const profile = await getOrCreateUserProfile(locals);
     const stats = await getProfileStats(locals)
 
-    console.log(profile)
     return {
-      profile,
       stats
     };
   } catch (error) {

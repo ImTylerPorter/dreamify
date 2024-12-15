@@ -1,8 +1,4 @@
-<svg
-	class="w-96 block max-w-fit mx-auto"
-	xmlns="http://www.w3.org/2000/svg"
-	viewBox="0 0 112.08 23.87"
->
+<svg class="w-32 block mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112.08 23.87">
 	<defs>
 		<linearGradient id="logo-gradient" gradientTransform="rotate(90)">
 			<stop offset="0%" stop-color="#c4b5fd" />
