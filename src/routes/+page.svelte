@@ -46,7 +46,6 @@
 			console.log(result, 'result');
 			if (result.status === 200) {
 				// If successful, toggle modal and handle session
-				console.log('Session:', result.session);
 				handleToggleModal();
 			} else {
 				// Display error from the server

@@ -5,25 +5,26 @@
 	import Textarea from '$lib/components/ui/Textarea.svelte';
 	import type { Profile } from '$lib/types';
 
-	const props = $props<{ profile: Profile; onSave: (profile: Profile) => void }>();
-	const { profile: initialProfile, onSave } = props;
+	const props = $props<{
+		profile: Profile;
+		onHandleProfileUpdate: (formData: FormData) => void;
+		onUpdateProfileState: (profile: Profile) => void;
+	}>();
+	const { profile: initialProfile, onHandleProfileUpdate, onUpdateProfileState } = props;
 
 	const profile = $state({ ...initialProfile });
 	const isLoading = $state(false);
 	const error = $state('');
 
-	async function handleSubmit() {
-		// isLoading.set(true);
-		// error.set('');
-		// try {
-		// 	const updatedProfile = await updateProfile($profile);
-		// 	onSave(updatedProfile);
-		// } catch (e) {
-		// 	error.set('Failed to update profile');
-		// } finally {
-		// 	isLoading.set(false);
-		// }
+	function handleSubmit(event: Event) {
+		event.preventDefault();
+		const formData = new FormData(event.target as HTMLFormElement);
+		onHandleProfileUpdate(formData);
 	}
+
+	$effect(() => {
+		onUpdateProfileState(profile);
+	});
 </script>
 
 <form onsubmit={handleSubmit} class="space-y-6">
@@ -35,6 +36,7 @@
 				bind:value={profile.firstName}
 				icon={User}
 				placeholder="Enter your first name"
+				name="first_name"
 			/>
 		</div>
 
@@ -45,6 +47,7 @@
 				bind:value={profile.lastName}
 				icon={User}
 				placeholder="Enter your last name"
+				name="last_name"
 			/>
 		</div>
 	</div>
@@ -56,12 +59,13 @@
 			bind:value={profile.displayName}
 			icon={AtSign}
 			placeholder="Choose a display name"
+			name="display_name"
 		/>
 	</div>
 
 	<div>
 		<label class="block text-sm font-medium text-purple-200 mb-2">Email</label>
-		<Input type="email" bind:value={profile.email} icon={Mail} readonly />
+		<Input type="email" bind:value={profile.email} icon={Mail} readonly name="email" />
 	</div>
 
 	<div>
@@ -71,6 +75,7 @@
 			icon={FileText}
 			placeholder="Tell us about yourself..."
 			rows={4}
+			name="bio"
 		/>
 	</div>
 
