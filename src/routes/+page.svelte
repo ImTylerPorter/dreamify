@@ -6,6 +6,7 @@
 	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
 	import type { Dream } from '$lib/types';
 	import LoginSignupModal from '$lib/components/LoginSignupModal.svelte';
+	import Logo from '$lib/components/Logo.svelte';
 
 	let currentDream = $state<Dream | null>(null);
 	let error = $state<string | null>(null);
@@ -61,11 +62,7 @@
 <div class="min-h-screen bg-[#13111C] relative overflow-hidden">
 	<main class="container mx-auto px-4 py-16 relative z-10">
 		<div class="text-center mb-16 space-y-4">
-			<h1
-				class="text-6xl md:text-7xl font-bold bg-gradient-to-r from-purple-300 via-purple-200 to-indigo-200 text-transparent bg-clip-text"
-			>
-				Dreamify
-			</h1>
+			<Logo />
 			<p class="text-xl text-purple-200/80">Simplify and amplify your dream interpretations</p>
 		</div>
 

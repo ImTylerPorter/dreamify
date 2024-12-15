@@ -11,7 +11,7 @@
 	<div class="absolute -bottom-16 left-8 flex items-end space-x-4">
 		<div class="relative">
 			<img
-				src={profile.profileImage || '/default-avatar.png'}
+				src={profile.profileImage || '/images/default-profile.jpg'}
 				alt={profile.displayName || 'Profile'}
 				class="w-32 h-32 rounded-full border-4 border-white bg-white"
 			/>
