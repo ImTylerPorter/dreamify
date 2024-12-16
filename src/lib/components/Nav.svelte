@@ -80,7 +80,13 @@
 	<div class="flex items-center space-x-4">
 		{#if $userProfile}
 			<!-- If userProfile is set, user is logged in -->
-			<div onclick={toggleMenu} class="cursor-pointer">
+			<button
+				aria-haspopup="true"
+				aria-expanded={isMenuOpen}
+				aria-label="Toggle Menu"
+				onclick={toggleMenu}
+				class="cursor-pointer"
+			>
 				<img
 					src={$userProfile.profileImage
 						? $userProfile.profileImage
@@ -88,7 +94,7 @@
 					alt=""
 					class="hover:scale-75 duration-300 w-10 h-10 rounded-full border-2 border-white bg-white"
 				/>
-			</div>
+			</button>
 		{:else}
 			<!-- If no userProfile, show login/signup buttons -->
 			<button

@@ -30,7 +30,9 @@
 <form onsubmit={handleSubmit} class="space-y-6">
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 		<div>
-			<label class="block text-sm font-medium text-purple-200 mb-2">First Name</label>
+			<label class="block text-sm font-medium text-purple-200 mb-2" for="first_name"
+				>First Name</label
+			>
 			<Input
 				type="text"
 				bind:value={profile.firstName}
@@ -41,7 +43,8 @@
 		</div>
 
 		<div>
-			<label class="block text-sm font-medium text-purple-200 mb-2">Last Name</label>
+			<label class="block text-sm font-medium text-purple-200 mb-2" for="last_name">Last Name</label
+			>
 			<Input
 				type="text"
 				bind:value={profile.lastName}
@@ -53,7 +56,9 @@
 	</div>
 
 	<div>
-		<label class="block text-sm font-medium text-purple-200 mb-2">Display Name</label>
+		<label class="block text-sm font-medium text-purple-200 mb-2" for="display_name"
+			>Display Name</label
+		>
 		<Input
 			type="text"
 			bind:value={profile.displayName}
@@ -64,12 +69,12 @@
 	</div>
 
 	<div>
-		<label class="block text-sm font-medium text-purple-200 mb-2">Email</label>
+		<label class="block text-sm font-medium text-purple-200 mb-2" for="email">Email</label>
 		<Input type="email" bind:value={profile.email} icon={Mail} readonly name="email" />
 	</div>
 
 	<div>
-		<label class="block text-sm font-medium text-purple-200 mb-2">Bio</label>
+		<label class="block text-sm font-medium text-purple-200 mb-2" for="bio">Bio</label>
 		<Textarea
 			bind:value={profile.bio}
 			icon={FileText}
