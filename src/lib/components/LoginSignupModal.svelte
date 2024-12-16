@@ -4,30 +4,24 @@
 	import Button from './ui/Button.svelte';
 	import ErrorDisplay from './ErrorDisplay.svelte';
 
-	const { isLogin, onToggleModal, onToggleLoginSignup, onHandleLogin } = $props<{
-		isLogin: boolean;
-		onToggleModal: () => void;
-		onToggleLoginSignup: () => void;
-		onHandleLogin: (formData: FormData) => void;
-	}>();
+	export let isLogin: boolean;
+	export let onToggleModal: () => void;
+	export let onToggleLoginSignup: () => void;
+	export let onHandleLogin: (formData: FormData) => void;
 
 	let email = '';
 	let password = '';
 	let confirmPassword = '';
 	let error = '';
 
-	// Clear error on input
 	function clearError(): void {
 		error = '';
 	}
 
-	// Handle form submission
 	function handleSubmit(event: Event) {
 		event.preventDefault();
 		const formData = new FormData(event.target as HTMLFormElement);
-
-		// Include isLogin toggle in the form data
-		formData.append('isLogin', `${isLogin}`);
+		formData.append('isLogin', String(isLogin));
 		onHandleLogin(formData);
 	}
 </script>
@@ -67,7 +61,7 @@
 						<span>Email</span>
 					</div>
 				</label>
-				<Input id="email" type="email" name="email" bind:value={email} oninput={clearError} />
+				<Input id="email" type="email" name="email" bind:value={email} on:input={clearError} />
 			</div>
 			<div>
 				<label for="password" class="block text-sm font-medium text-gray-200">
@@ -81,7 +75,7 @@
 					type="password"
 					name="password"
 					bind:value={password}
-					oninput={clearError}
+					on:input={clearError}
 				/>
 			</div>
 			{#if !isLogin}
@@ -96,7 +90,7 @@
 						id="confirmPassword"
 						type="password"
 						bind:value={confirmPassword}
-						oninput={clearError}
+						on:input={clearError}
 					/>
 				</div>
 			{/if}

@@ -3,14 +3,15 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import Textarea from '$lib/components/ui/Textarea.svelte';
 	import { enhance } from '$app/forms';
+	import { userProfile } from '$lib/stores/userStore';
 
-	const { onToggleModal, onDreamInterpreted, onInterpretationError, user } = $props();
+	const { onToggleModal, onDreamInterpreted, onInterpretationError } = $props();
 
 	let dreamTitle = $state('');
 	let dreamContent = $state('');
 	let isLoading = $state(false);
 
-	function handleSubmit(event: SubmitEvent) {
+	function handleSubmit(_event: SubmitEvent) {
 		isLoading = true;
 	}
 
@@ -32,10 +33,9 @@
 
 <form
 	method="POST"
-	use:enhance={({ formElement, formData, action, controller, submitter }) => {
-		return async ({ result, update }) => {
-			handleSubmit(new SubmitEvent('submit', { submitter: formElement }));
-			await update({ reset: false });
+	use:enhance={() => {
+		return async ({ result }) => {
+			handleSubmit(new SubmitEvent('submit'));
 			handleResult({ result });
 		};
 	}}
@@ -67,7 +67,8 @@
 		/>
 	</div>
 
-	{#if user}
+	{#if $userProfile}
+		<!-- If user is logged in, show the submit button -->
 		<Button type="submit" disabled={isLoading} variant={isLoading ? 'loading' : 'default'}>
 			{#if isLoading}
 				<div class="flex items-center justify-center space-x-2">
@@ -84,11 +85,12 @@
 			{/if}
 		</Button>
 	{:else}
-		<Button onclick={toggleModal}
-			><span class="flex items-center justify-center space-x-2">
+		<!-- If no user is logged in, open the login/signup modal -->
+		<Button onclick={toggleModal}>
+			<span class="flex items-center justify-center space-x-2">
 				<span>✨</span>
 				<span>Interpret Dream</span>
-			</span></Button
-		>
+			</span>
+		</Button>
 	{/if}
 </form>

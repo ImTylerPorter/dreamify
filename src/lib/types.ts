@@ -1,3 +1,5 @@
+import type { Session, User, SupabaseClient } from '@supabase/supabase-js';
+
 export interface Dream {
   id?: string;
   userId: string;
@@ -41,4 +43,17 @@ export type ProfileStats = {
   interpretationsUsed: number;
   subscriptionStatus: string;
   joinedDate: Date;
+};
+
+// Add these to match the data structure expected in your components
+export type DataProps = {
+  session: Session | null;
+  supabase: SupabaseClient;
+  user: User | null;
+  profile: Profile | null;
+};
+
+export type Props = {
+  data: DataProps;
+  onHandleToggleLoginSignupModal: () => void; // Add this line
 };

@@ -1,22 +1,28 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import type { Session, User, SupabaseClient } from '@supabase/supabase-js';
+	import type { Profile } from '$lib/types';
 
 	import DreamForm from '$lib/components/DreamForm.svelte';
 	import DreamDisplay from '$lib/components/DreamDisplay.svelte';
 	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
 	import type { Dream } from '$lib/types';
-	import LoginSignupModal from '$lib/components/LoginSignupModal.svelte';
-	import Logo from '$lib/components/Logo.svelte';
 	import LogoIcon from '$lib/components/LogoIcon.svelte';
+	import { openAuthModal } from '$lib/stores/authModal';
 
 	let currentDream = $state<Dream | null>(null);
 	let error = $state<string | null>(null);
 
-	let { data } = $props();
-	let { user } = data;
+	interface PageProps {
+		data: {
+			session: Session | null;
+			supabase: SupabaseClient<any, 'public', any>;
+			user: User | null;
+			profile: Profile | null;
+		};
+	}
 
-	let modalOpen = $state(false);
-	let isLogin = $state(true);
+	let { data } = $props() as PageProps;
+	let { user } = data;
 
 	function handleDreamInterpreted(dream: Dream) {
 		error = null;
@@ -28,41 +34,14 @@
 		currentDream = null;
 	}
 
-	function handleToggleModal() {
-		modalOpen = !modalOpen;
-	}
-
-	function handleToggleLoginSignup() {
-		isLogin = !isLogin;
-	}
-
-	async function handleAuth(formData: FormData) {
-		try {
-			// Send POST request to the server
-			const response = await fetch($page.url.pathname, {
-				method: 'POST',
-				body: formData
-			});
-			const result = await response.json();
-			console.log(result, 'result');
-			if (result.status === 200) {
-				// If successful, toggle modal and handle session
-				handleToggleModal();
-			} else {
-				// Display error from the server
-				error = result.error || 'An unknown error occurred.';
-			}
-		} catch (err) {
-			// Handle unexpected errors
-			error = 'An error occurred while processing your request.';
-		}
+	function promptLoginModal() {
+		openAuthModal(true);
 	}
 </script>
 
 <div class="min-h-screen bg-[#13111C] relative overflow-hidden">
 	<main class="container mx-auto px-4 py-16 relative z-10">
 		<div class="text-center mb-16 space-y-4">
-			<!-- <Logo /> -->
 			<LogoIcon />
 			<p class="text-xl text-purple-200/80">Simplify and amplify your dream interpretations</p>
 		</div>
@@ -77,10 +56,9 @@
 					{/if}
 
 					<DreamForm
-						{user}
 						onDreamInterpreted={handleDreamInterpreted}
 						onInterpretationError={handleInterpretationError}
-						onToggleModal={handleToggleModal}
+						onToggleModal={promptLoginModal}
 					/>
 
 					{#if currentDream}
@@ -91,13 +69,3 @@
 		</div>
 	</main>
 </div>
-
-<!-- Modal -->
-{#if modalOpen}
-	<LoginSignupModal
-		onToggleModal={handleToggleModal}
-		onToggleLoginSignup={handleToggleLoginSignup}
-		onHandleLogin={handleAuth}
-		{isLogin}
-	/>
-{/if}

@@ -25,8 +25,8 @@
 
 <div class={cn('relative flex items-center', className)}>
 	{#if icon}
-		<svelte:component
-			this={icon}
+		{@const SvelteComponent = icon}
+		<SvelteComponent
 			class="absolute top-4 left-3 w-5 h-5 text-purple-300 pointer-events-none"
 		/>
 	{/if}

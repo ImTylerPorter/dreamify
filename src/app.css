@@ -17,6 +17,14 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --border: 213.33333333333334 7.692307692307694% 22.941176470588236%;
+  --tw-shadow-colored: 0 0 #0000;
+  --radius: 8px;
+}
+
+* {
+  border-color: hsl(var(--border));
 }
 
 body {
