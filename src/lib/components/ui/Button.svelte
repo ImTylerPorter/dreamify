@@ -26,7 +26,7 @@
 	)}
 	{...rest}
 >
-	<span class="relative z-10">
+	<span class="flex items-center justify-self-center relative z-10">
 		{@render children?.()}
 	</span>
 </button>
