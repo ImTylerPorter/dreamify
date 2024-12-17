@@ -11,7 +11,6 @@ export const authModal = writable<AuthModalState>({
 });
 
 export function openAuthModal(isLogin = true) {
-  console.log('firing from store')
   authModal.set({ open: true, isLogin });
 }
 

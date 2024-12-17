@@ -38,7 +38,6 @@
 
 		if (hasChanges) {
 			updatedProfile = { ...updatedProfile, ...profile };
-			console.log('Updated Profile State:', updatedProfile);
 		}
 	}
 
@@ -50,10 +49,8 @@
 				body: formData
 			});
 			const result = await response.json();
-			console.log(result, 'result');
 			if (result.status === 200) {
 				// If successful, do something, maybe a toast message?
-				console.log('yes, it was successfull');
 				isEditing = false;
 			} else {
 				// Display error from the server

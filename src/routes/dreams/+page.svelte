@@ -1,27 +1,45 @@
 <script lang="ts">
 	import DreamsHeader from '$lib/components/dreams/DreamsHeader.svelte';
 	import DreamsList from '$lib/components/dreams/DreamsList.svelte';
+	import { onMount } from 'svelte';
+	import { dreams, isLoading, hasMore, loadMoreDreams } from '$lib/stores/dreams';
 
 	let { data } = $props();
+
+	// Initialize store with server-loaded dreams
+	dreams.set(data.dreams);
+
+	let sentinel: HTMLDivElement;
+
+	onMount(() => {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				if (entries[0].isIntersecting) {
+					loadMoreDreams();
+				}
+			},
+			{ rootMargin: '160px' }
+		);
+		if (sentinel) observer.observe(sentinel);
+	});
 </script>
 
 <div class="min-h-screen bg-[#13111C]">
 	<div class="container mx-auto px-4 py-16">
 		<DreamsHeader totalDreams={data.totalDreams} />
 
-		<div class="relative overflow-hidden">
-			<!-- Decorative gradient effects -->
-			<div
-				class="absolute -top-40 -right-40 w-80 h-80 bg-purple-600/30 rounded-full blur-3xl"
-			></div>
-			<div
-				class="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-600/30 rounded-full blur-3xl"
-			></div>
+		<div class="relative backdrop-blur-sm">
+			<DreamsList />
 
-			<!-- Dreams list with backdrop blur -->
-			<div class="relative backdrop-blur-sm">
-				<DreamsList dreams={data.dreams} />
-			</div>
+			<!-- Loading Indicator -->
+			{#if $isLoading}
+				<div class="text-center py-4">Loading...</div>
+			{/if}
+
+			<!-- Infinite Scroll Sentinel -->
+			{#if $hasMore}
+				<div bind:this={sentinel} class="h-10"></div>
+			{/if}
 		</div>
 	</div>
 </div>

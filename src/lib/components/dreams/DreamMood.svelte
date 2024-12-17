@@ -3,8 +3,6 @@
 
 	const { mood } = $props<{ mood: string }>();
 	const moodColor = getMoodColor(mood);
-	console.log(moodColor, 'mood color');
-	console.log(mood, 'mood');
 </script>
 
 <div class="mt-4 flex items-center space-x-2">

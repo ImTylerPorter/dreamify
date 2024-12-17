@@ -29,6 +29,5 @@ const moodColors: MoodColor = {
 
 export function getMoodColor(mood: string): string {
   const lowerMood = mood.toLowerCase();
-  console.log(moodColors[lowerMood], 'from function');
   return moodColors[lowerMood] || moodColors.neutral;
 }
