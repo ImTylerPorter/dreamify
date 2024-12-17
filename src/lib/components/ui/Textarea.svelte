@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
+	import { cn } from '$lib/utils/index';
 
 	interface Props {
 		value?: string;
@@ -25,9 +25,7 @@
 <div class={cn('relative flex items-start', className)}>
 	{#if icon}
 		{@const SvelteComponent = icon}
-		<SvelteComponent
-			class="absolute top-3 left-3 w-5 h-5 text-purple-300 pointer-events-none"
-		/>
+		<SvelteComponent class="absolute top-3 left-3 w-5 h-5 text-purple-300 pointer-events-none" />
 	{/if}
 
 	<textarea

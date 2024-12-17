@@ -12,7 +12,7 @@
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import Nav from '$lib/components/Nav.svelte';
-	import LoginSignupModal from '$lib/components/LoginSignupModal.svelte';
+	import LoginSignupModal from '$lib/components/home/LoginSignupModal.svelte';
 	import { authModal, closeAuthModal, toggleAuthMode } from '$lib/stores/authModal';
 	import { userProfile } from '$lib/stores/userStore';
 

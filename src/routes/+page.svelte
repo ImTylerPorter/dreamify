@@ -2,8 +2,8 @@
 	import type { Session, User, SupabaseClient } from '@supabase/supabase-js';
 	import type { Profile } from '$lib/types';
 
-	import DreamForm from '$lib/components/DreamForm.svelte';
-	import DreamDisplay from '$lib/components/DreamDisplay.svelte';
+	import DreamForm from '$lib/components/home/DreamForm.svelte';
+	import DreamDisplay from '$lib/components/home/DreamDisplay.svelte';
 	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
 	import type { Dream } from '$lib/types';
 	import LogoIcon from '$lib/components/LogoIcon.svelte';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
+	import { cn } from '$lib/utils/index';
 
 	// Type for props
 	interface Props {
@@ -26,9 +26,7 @@
 <div class={cn('relative flex items-center', className)}>
 	{#if icon}
 		{@const SvelteComponent = icon}
-		<SvelteComponent
-			class="absolute top-4 left-3 w-5 h-5 text-purple-300 pointer-events-none"
-		/>
+		<SvelteComponent class="absolute top-4 left-3 w-5 h-5 text-purple-300 pointer-events-none" />
 	{/if}
 
 	<input

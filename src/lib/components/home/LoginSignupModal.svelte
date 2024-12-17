@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { Mail, Lock, UserPlus } from 'lucide-svelte';
-	import Input from './ui/Input.svelte';
-	import Button from './ui/Button.svelte';
-	import ErrorDisplay from './ErrorDisplay.svelte';
+	import Input from '../ui/Input.svelte';
+	import Button from '../ui/Button.svelte';
+	import ErrorDisplay from '../ErrorDisplay.svelte';
 
 	export let isLogin: boolean;
 	export let onToggleModal: () => void;

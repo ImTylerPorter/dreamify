@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	import ProfileHeader from '$lib/components/ProfileHeader.svelte';
-	import ProfileStats from '$lib/components/ProfileStats.svelte';
-	import ProfileForm from '$lib/components/ProfileForm.svelte';
+	import ProfileHeader from '$lib/components/profile/ProfileHeader.svelte';
+	import ProfileStats from '$lib/components/profile/ProfileStats.svelte';
+	import ProfileForm from '$lib/components/profile/ProfileForm.svelte';
 	import type { Profile } from '$lib/types.js';
 
 	let { data } = $props();
