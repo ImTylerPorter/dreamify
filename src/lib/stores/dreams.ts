@@ -3,50 +3,52 @@ import type { Dream } from '$lib/types';
 
 const PAGE_SIZE = 10;
 
-export const dreams = writable<Dream[]>([]); // Writable store for dreams
-export const isLoading = writable(false);    // Tracks loading state
-export const hasMore = writable(true);       // Tracks if more data is available
-export let offset = 0;                       // Tracks pagination offset
+export const dreams = writable<Dream[]>([]);
+export const isLoading = writable(false);
+export const hasMore = writable(true);
+export const rawSearchQuery = writable('');
 
+// Offset (non-reactive for simplicity)
+let offset = 0;
+
+// Reload all dreams with the new search query
+export async function reloadDreams() {
+  offset = 0;              // Reset pagination offset
+  dreams.set([]);          // Clear dreams list
+  hasMore.set(true);       // Allow pagination to resume
+  await loadMoreDreams();  // Fetch fresh results
+}
+
+// Fetch dreams (with search query and pagination)
 export async function loadMoreDreams() {
-  // Prevent multiple calls while already loading or if no more data
   if (get(isLoading) || !get(hasMore)) return;
 
-  isLoading.set(true); // Set loading to true
+  isLoading.set(true);
 
   try {
-    const url = `/api/dreams?limit=${PAGE_SIZE}&offset=${offset}&_=${Date.now()}`; // Cache busting
-    const response = await fetch(url);
+    const searchQuery = get(rawSearchQuery).trim();
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Fetch failed:', response.status, errorText);
-      throw new Error(`Failed to fetch dreams: ${response.statusText}`);
-    }
+    const response = await fetch(
+      `/api/dreams?limit=${PAGE_SIZE}&offset=${offset}&q=${encodeURIComponent(searchQuery)}`
+    );
+    if (!response.ok) throw new Error(`Fetch failed: ${response.statusText}`);
 
-    const { dreams: newDreams } = await response.json();
+    const { dreams: newDreams, totalDreams } = await response.json();
 
-    if (newDreams.length === 0) {
-      hasMore.set(false); // No more data
-    }
-
-    // Deduplicate and append dreams
     dreams.update((current) => {
-      const existingIds = new Set(current.map((dream) => dream.id));
-      const uniqueDreams = newDreams.filter((dream: Dream) => !existingIds.has(dream.id));
-      return [...current, ...uniqueDreams];
+      if (offset === 0) {
+        return newDreams; // Replace on new search
+      }
+      return [...current, ...newDreams]; // Append for pagination
     });
 
-    // Update offset
-    if (newDreams.length < PAGE_SIZE) {
-      hasMore.set(false); // No more pages available
-    } else {
-      offset += PAGE_SIZE;
-    }
+    offset += newDreams.length;
+
+    if (offset >= totalDreams) hasMore.set(false);
   } catch (error) {
-    console.error('Error loading more dreams:', error);
-    hasMore.set(false); // Stop further calls on error
+    console.error('Error loading dreams:', error);
+    hasMore.set(false);
   } finally {
-    isLoading.set(false); // Ensure loading is reset
+    isLoading.set(false);
   }
 }

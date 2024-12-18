@@ -1,20 +1,23 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
-	import { Book } from 'lucide-svelte';
-	import DreamCard from './DreamCard.svelte';
+	import { derived } from 'svelte/store';
 	import { dreams } from '$lib/stores/dreams';
+	import DreamCard from './DreamCard.svelte';
+	import { rawSearchQuery } from '$lib/stores/dreams';
+
+	// Derived store to generate the search key reactively
+	const searchKey = derived([dreams], ([$dreams]) => `${rawSearchQuery}-${$dreams.length}`);
 </script>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" transition:fade>
-	{#each $dreams as dream (dream.id)}
-		<DreamCard {dream} />
-	{/each}
+{#key $searchKey}
+	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+		{#each $dreams as dream (dream.id)}
+			<DreamCard {dream} />
+		{/each}
 
-	{#if $dreams.length === 0}
-		<div class="col-span-full flex flex-col items-center justify-center py-12 text-center">
-			<Book class="w-12 h-12 text-purple-400/50 mb-4" />
-			<p class="text-purple-200/70 text-lg mb-2">No dreams recorded yet</p>
-			<p class="text-purple-200/50">Start by logging your first dream!</p>
-		</div>
-	{/if}
-</div>
+		{#if $dreams.length === 0}
+			<div class="col-span-full text-center py-12">
+				<p class="text-gray-400">No dreams found for this search.</p>
+			</div>
+		{/if}
+	</div>
+{/key}

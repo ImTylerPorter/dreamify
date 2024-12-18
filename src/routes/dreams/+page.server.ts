@@ -1,5 +1,6 @@
+// src/routes/dreams/+page.server.ts
 import { error } from '@sveltejs/kit';
-import { eq, sql } from 'drizzle-orm';
+import { eq, and, sql } from 'drizzle-orm';
 import { db } from '$lib/db';
 import { getOrCreateUserProfile } from '$lib/auth';
 import { dreamsTable } from '$lib/db/schema';
@@ -16,22 +17,35 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 
     const limit = Math.min(Number(url.searchParams.get('limit')) || 10, 50);
     const offset = Math.max(Number(url.searchParams.get('offset')) || 0, 0);
+    const search = url.searchParams.get('q')?.trim() || '';
 
-    const [dreams, totalCount] = await Promise.all([
+    // Start with a guaranteed condition: user must match
+    const conditions = [eq(dreamsTable.userId, userProfile.id)];
+
+    // Add search conditions if `search` is not empty
+    if (search) {
+      // Adjust the field 'title' to whatever makes sense in your schema
+      conditions.push(sql`LOWER(${dreamsTable.title}) LIKE LOWER(${`%${search}%`})`);
+    }
+
+    // Combine all conditions with `and()`
+    const whereCondition = conditions.length > 1 ? and(...conditions) : conditions[0];
+
+    const [dreamsResult, totalCount] = await Promise.all([
       db
         .select()
         .from(dreamsTable)
-        .where(eq(dreamsTable.userId, userProfile.id))
+        .where(whereCondition)
         .limit(limit)
         .offset(offset),
       db
         .select({ count: sql<number>`COUNT(*)` })
         .from(dreamsTable)
-        .where(eq(dreamsTable.userId, userProfile.id)),
+        .where(whereCondition),
     ]);
 
     return {
-      dreams: dreams as Dream[],
+      dreams: dreamsResult as Dream[],
       totalDreams: totalCount[0]?.count || 0,
     };
   } catch (e) {

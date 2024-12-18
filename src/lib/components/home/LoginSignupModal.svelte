@@ -61,7 +61,7 @@
 						<span>Email</span>
 					</div>
 				</label>
-				<Input id="email" type="email" name="email" bind:value={email} on:input={clearError} />
+				<Input id="email" type="email" name="email" bind:value={email} oninput={clearError} />
 			</div>
 			<div>
 				<label for="password" class="block text-sm font-medium text-gray-200">
@@ -75,7 +75,7 @@
 					type="password"
 					name="password"
 					bind:value={password}
-					on:input={clearError}
+					oninput={clearError}
 				/>
 			</div>
 			{#if !isLogin}
@@ -90,7 +90,7 @@
 						id="confirmPassword"
 						type="password"
 						bind:value={confirmPassword}
-						on:input={clearError}
+						oninput={clearError}
 					/>
 				</div>
 			{/if}

@@ -1,7 +1,8 @@
+<!-- src/lib/components/ui/Input.svelte -->
 <script lang="ts">
 	import { cn } from '$lib/utils/index';
 
-	// Type for props
+	// Define the props interface
 	interface Props {
 		type?: string;
 		value?: string;
@@ -9,12 +10,13 @@
 		placeholder?: string;
 		required?: boolean;
 		icon?: typeof import('lucide-svelte').User | null; // Allow null for icon
-		[key: string]: any;
+		[key: string]: any; // Allow any additional props, including event handlers
 	}
 
+	// Destructure props with default values and mark 'value' as bindable
 	let {
 		type = 'text',
-		value = $bindable(''),
+		value = $bindable(''), // Mark 'value' as bindable
 		className = '',
 		placeholder = '',
 		required = false,
@@ -31,7 +33,7 @@
 
 	<input
 		{type}
-		bind:value
+		{value}
 		{placeholder}
 		{required}
 		class={cn(
@@ -43,6 +45,7 @@
 			{ 'pl-10': icon }, // Add padding if an icon is present
 			className
 		)}
+		oninput={(e) => (value = (e.target as HTMLInputElement).value)}
 		{...rest}
 	/>
 </div>
