@@ -6,7 +6,6 @@ import { eq } from "drizzle-orm";
 
 export async function load({ locals }) {
   try {
-    // Load user profile, sections and settings
     const stats = await getProfileStats(locals)
 
     return {
@@ -28,20 +27,46 @@ export const actions = {
 
     const data = await request.formData();
 
-    // Extract and type-check form data
-    const email = data.get('email') as string | null;
-    const firstName = (data.get('first_name') as string | null) ?? '';
-    const lastName = (data.get('last_name') as string | null) ?? '';
-    const displayName = (data.get('display_name') as string | null) ?? '';
-    const bio = (data.get('bio') as string | null) ?? '';
+    const profileImage = data.get('profile_image') as File;
 
-    // Perform the database update
-    await db.update(profileTable).set({
-      firstName,
-      lastName,
-      email,
-      displayName,
-      bio
-    }).where(eq(profileTable.id, userProfile.id));
+    if (profileImage) {
+      const fileName = (profileImage.name || 'default_profile.jpg').replace(/\s+/g, '-');
+      const { error: uploadError } = await locals.supabase.storage
+        .from('images')
+        .upload(`${fileName}`, profileImage, {
+          metadata: { userId: userProfile.id }
+        });
+
+      if (uploadError) {
+        error(401, uploadError.message);
+      }
+
+      const publicUrl = locals.supabase.storage
+        .from('images')
+        .getPublicUrl(fileName).data.publicUrl;
+
+      await db.update(profileTable).set({
+        profileImage: publicUrl,
+      }).where(eq(profileTable.id, userProfile.id));
+    } else {
+
+      // Extract and type-check form data
+      const email = data.get('email') as string | null;
+      const firstName = (data.get('first_name') as string | null) ?? '';
+      const lastName = (data.get('last_name') as string | null) ?? '';
+      const displayName = (data.get('display_name') as string | null) ?? '';
+      const bio = (data.get('bio') as string | null) ?? '';
+
+      // Perform the database update
+      await db.update(profileTable).set({
+        firstName,
+        lastName,
+        email,
+        displayName,
+        bio
+      }).where(eq(profileTable.id, userProfile.id));
+
+    }
+
   }
 };

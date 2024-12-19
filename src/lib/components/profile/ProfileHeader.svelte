@@ -3,12 +3,26 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import type { Profile } from '$lib/types';
 
+	let selectedImage: File | null = null;
+	let previewImage = $state<string | null>(null);
+
 	// Props for profile and updatedProfile
-	const { profile, onEdit, updatedProfile } = $props<{
+	const { profile, onEdit, updatedProfile, onProfileImageUpdate } = $props<{
 		profile: Profile;
 		updatedProfile: Profile;
 		onEdit: () => void;
+		onProfileImageUpdate: (image: File) => void;
 	}>();
+
+	function handleImageChange(event: Event) {
+		const target = event.target as HTMLInputElement;
+		const file = target.files?.[0];
+		if (file) {
+			selectedImage = file;
+			previewImage = URL.createObjectURL(file);
+			onProfileImageUpdate(selectedImage);
+		}
+	}
 </script>
 
 <div class="relative mb-20">
@@ -17,16 +31,19 @@
 		<div class="relative">
 			<!-- Display updated profile image if it exists -->
 			<img
-				src={updatedProfile.profileImage || profile.profileImage || '/images/default-profile.jpg'}
+				src={previewImage ||
+					updatedProfile.profileImage ||
+					profile.profileImage ||
+					'/images/default-profile.jpg'}
 				alt={updatedProfile.displayName || profile.displayName || 'Profile'}
 				class="w-32 h-32 rounded-full border-4 border-white bg-white"
 			/>
-			<button
+			<label
 				class="absolute bottom-0 right-0 p-2 bg-purple-600 rounded-full text-white hover:bg-purple-700 transition-colors"
-				aria-label="Update profile picture"
 			>
 				<Camera size={16} />
-			</button>
+				<input type="file" accept="image/*" class="hidden" on:change={handleImageChange} />
+			</label>
 		</div>
 		<div class="mb-4">
 			<!-- Merge updated display name and fallback to profile -->

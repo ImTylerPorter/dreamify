@@ -22,6 +22,8 @@
 		createdAt: profile?.createdAt ?? new Date() // Default to current date
 	});
 
+	let profileImageSrc = $state<File | null>(null);
+
 	let isEditing = $state(false);
 	let error = $state('');
 
@@ -49,7 +51,8 @@
 				body: formData
 			});
 			const result = await response.json();
-			if (result.status === 200) {
+
+			if (result.status === 200 || result.status === 204) {
 				// If successful, do something, maybe a toast message?
 				isEditing = false;
 			} else {
@@ -60,6 +63,13 @@
 			// Handle unexpected errors
 			error = 'An error occurred while processing your request.';
 		}
+	}
+
+	async function handleProfileImageUpdate(image: File) {
+		let form = new FormData();
+		profileImageSrc = image;
+		form.append('profile_image', profileImageSrc);
+		await handleProfileUpdate(form);
 	}
 </script>
 
@@ -72,7 +82,12 @@
 
 	{#if profile}
 		<div class="max-w-7xl mx-auto px-4 py-8">
-			<ProfileHeader {profile} {updatedProfile} onEdit={handleEdit} />
+			<ProfileHeader
+				{profile}
+				{updatedProfile}
+				onEdit={handleEdit}
+				onProfileImageUpdate={handleProfileImageUpdate}
+			/>
 
 			{#if stats}
 				<ProfileStats {stats} />
