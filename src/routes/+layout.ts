@@ -33,5 +33,6 @@ export const load: LayoutLoad = async ({ data, depends, fetch }) => {
     profile = data.profile as Profile;
   }
 
+
   return { session, supabase, user, profile };
 };

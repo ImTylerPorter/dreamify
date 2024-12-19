@@ -7,11 +7,11 @@ export async function POST({ locals }) {
     throw error(401, 'Unauthorized');
   }
 
-  const allowed = await checkAndIncrementDailyLimit(user.id);
+  const { allowed, remaining } = await checkAndIncrementDailyLimit(user.id);
 
   if (!allowed) {
-    return json({ message: 'Daily limit of 5 interpretations reached.' }, { status: 403 });
+    return json({ message: 'Daily limit of 8 interpretations reached.', remaining }, { status: 403 });
   }
 
-  return json({ message: 'Allowed' });
+  return json({ message: 'Allowed', remaining });
 }
