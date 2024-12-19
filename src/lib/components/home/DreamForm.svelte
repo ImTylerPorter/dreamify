@@ -11,8 +11,22 @@
 	let dreamContent = $state('');
 	let isLoading = $state(false);
 
-	function handleSubmit(_event: SubmitEvent) {
-		isLoading = true;
+	async function handleSubmit(_event: SubmitEvent) {
+		try {
+			const limitCheckResponse = await fetch('/api/interpretation-limit', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' }
+			});
+
+			if (!limitCheckResponse.ok) {
+				const errorData = await limitCheckResponse.json();
+				throw new Error(errorData.message || 'Failed to check interpretation limit');
+			}
+		} catch (err: any) {
+			onInterpretationError(err.message);
+			isLoading = false;
+			return;
+		}
 	}
 
 	function handleResult({ result }: { result: any }) {
@@ -23,7 +37,7 @@
 		} else if (result.type === 'failure') {
 			onInterpretationError(result.data?.error || 'Failed to submit dream');
 		}
-		isLoading = false;
+		isLoading = false; // Ensure reactivity is triggered here
 	}
 
 	function toggleModal() {
@@ -34,6 +48,7 @@
 <form
 	method="POST"
 	use:enhance={() => {
+		isLoading = true;
 		return async ({ result }) => {
 			handleSubmit(new SubmitEvent('submit'));
 			handleResult({ result });
