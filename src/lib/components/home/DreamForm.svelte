@@ -4,6 +4,7 @@
 	import Textarea from '$lib/components/ui/Textarea.svelte';
 	import { enhance } from '$app/forms';
 	import { userProfile } from '$lib/stores/userStore';
+	import { onMount } from 'svelte';
 
 	const { onToggleModal, onDreamInterpreted, onInterpretationError } = $props();
 
@@ -59,7 +60,9 @@
 		onToggleModal();
 	}
 
-	fetchRemainingDreams();
+	onMount(() => {
+		fetchRemainingDreams();
+	});
 </script>
 
 <form
@@ -98,7 +101,7 @@
 		/>
 	</div>
 
-	{#if remainingDreams < 3}
+	{#if $userProfile && remainingDreams < 3}
 		<p class="text-sm text-gray-500">
 			You have <span class="font-semibold">{remainingDreams}</span> dream interpretations left for today.
 		</p>
