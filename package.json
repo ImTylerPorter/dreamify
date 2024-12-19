@@ -4,15 +4,14 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build && tsx src/lib/db/seed.ts",
+		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
 		"db:generate": "drizzle-kit generate",
-		"db:apply": "drizzle-kit push",
-		"seed": "tsx src/lib/db/seed.ts"
+		"db:apply": "drizzle-kit push"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.3",
