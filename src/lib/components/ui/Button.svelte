@@ -22,11 +22,12 @@
 		'before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100',
 		'disabled:opacity-50 disabled:cursor-not-allowed disabled:before:opacity-0',
 		'transform transition-transform active:scale-[0.98]',
+		'flex items-center justify-center', // Ensure proper centering
 		className
 	)}
 	{...rest}
 >
-	<span class="flex items-center justify-self-center relative z-10">
+	<span class="relative z-10 flex items-center justify-center">
 		{@render children?.()}
 	</span>
 </button>
