@@ -120,12 +120,12 @@
 			{#if isLoading}
 				<div class="flex items-center justify-center space-x-2">
 					<span
-						class="inline-block w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"
+						class="w-full inline-block w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"
 					></span>
 					<span>Interpreting Dream...</span>
 				</div>
 			{:else}
-				<span class="flex items-center justify-center space-x-2">
+				<span class="flex items-center justify-center space-x-2 w-full">
 					<span>✨</span>
 					<span>Interpret Dream</span>
 				</span>
@@ -134,7 +134,7 @@
 	{:else}
 		<!-- If no user is logged in, open the login/signup modal -->
 		<Button onclick={toggleModal}>
-			<span class="flex items-center justify-center space-x-2">
+			<span class="w-full flex items-center justify-center space-x-2">
 				<span>✨</span>
 				<span>Interpret Dream</span>
 			</span>

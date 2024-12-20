@@ -32,6 +32,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Dreamify - {data.dream?.title || 'Dream'}</title>
+</svelte:head>
+
 <div class="min-h-screen bg-[#13111C] py-16" transition:fade>
 	<div class="container mx-auto px-4">
 		<div class="max-w-4xl mx-auto relative">
