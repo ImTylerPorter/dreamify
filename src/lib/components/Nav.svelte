@@ -99,13 +99,13 @@
 			<!-- If no userProfile, show login/signup buttons -->
 			<button
 				onclick={showLoginModal}
-				class="hidden md:block px-5 py-2 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-blue-500 to-teal-500 shadow-lg hover:from-blue-600 hover:to-teal-600 transition-all duration-200"
+				class=" block px-5 py-2 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-blue-500 to-teal-500 shadow-lg hover:from-blue-600 hover:to-teal-600 transition-all duration-200"
 			>
 				Log In
 			</button>
 			<button
 				onclick={showSignupModal}
-				class="hidden md:block px-5 py-2 rounded-full text-sm font-semibold text-indigo-500 bg-white shadow-lg border border-indigo-500 hover:bg-indigo-500 hover:text-white transition-all duration-200"
+				class="block px-5 py-2 rounded-full text-sm font-semibold text-indigo-500 bg-white shadow-lg border border-indigo-500 hover:bg-indigo-500 hover:text-white transition-all duration-200"
 			>
 				Sign Up
 			</button>

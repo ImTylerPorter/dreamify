@@ -73,6 +73,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Dreamify - My Profile</title>
+</svelte:head>
+
 <div class="min-h-screen bg-[#13111C]">
 	{#if error}
 		<div class="p-4 bg-red-500/20 text-red-200 text-center">
