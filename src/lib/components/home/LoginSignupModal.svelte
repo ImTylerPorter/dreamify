@@ -4,15 +4,17 @@
 	import Button from '../ui/Button.svelte';
 	import ErrorDisplay from '../ErrorDisplay.svelte';
 
-	export let isLogin: boolean;
-	export let onToggleModal: () => void;
-	export let onToggleLoginSignup: () => void;
-	export let onHandleLogin: (formData: FormData) => void;
+	let { isLogin, onToggleModal, onToggleLoginSignup, onHandleLogin } = $props<{
+		isLogin: boolean;
+		onToggleModal: () => void;
+		onToggleLoginSignup: () => void;
+		onHandleLogin: (formData: FormData) => void;
+	}>();
 
-	let email = '';
-	let password = '';
-	let confirmPassword = '';
-	let error = '';
+	let email = $state('');
+	let password = $state('');
+	let confirmPassword = $state('');
+	let error = $state('');
 
 	function clearError(): void {
 		error = '';
