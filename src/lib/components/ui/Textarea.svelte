@@ -38,7 +38,7 @@
 			'text-white placeholder-purple-300/50',
 			'focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500/50',
 			'transition-all duration-200',
-			'hover:border-purple-500/30 indent-1 py-1', // Adjust padding for the icon
+			'hover:border-purple-500/30 indent-1 p-1',
 			{ 'pl-10': icon }, // Add padding if an icon is present
 			className
 		)}
