@@ -42,7 +42,7 @@
 				class="absolute bottom-0 right-0 p-2 bg-purple-600 rounded-full text-white hover:bg-purple-700 transition-colors"
 			>
 				<Camera size={16} />
-				<input type="file" accept="image/*" class="hidden" on:change={handleImageChange} />
+				<input type="file" accept="image/*" class="hidden" onchange={handleImageChange} />
 			</label>
 		</div>
 		<div class="mb-4">
