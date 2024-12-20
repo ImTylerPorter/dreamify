@@ -59,8 +59,11 @@
 		onToggleModal();
 	}
 
-	onMount(() => {
-		fetchRemainingDreams();
+	$effect(() => {
+		if ($userProfile) {
+			console.log('User profile detected:', $userProfile);
+			fetchRemainingDreams();
+		}
 	});
 </script>
 
