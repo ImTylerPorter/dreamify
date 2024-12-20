@@ -40,6 +40,9 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Dreamify - My Dreams</title>
+</svelte:head>
 <div class="min-h-screen bg-[#13111C]">
 	<div class="container mx-auto px-4 py-16">
 		<!-- Pass totalDreams reactively -->

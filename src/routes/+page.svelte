@@ -39,6 +39,19 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Dreamify - Simplify and amplify your dream interpretations</title>
+	<meta
+		name="description"
+		content="Discover the meanings behind your dreams with Dreamify. Log your dreams, explore AI-powered interpretations, and uncover symbolic insights in a modern, user-friendly app."
+	/>
+	<meta property="og:title" content="Dreamify - Simplify and amplify your dream interpretations" />
+	<meta
+		property="og:description"
+		content="Discover the meanings behind your dreams with Dreamify. Log your dreams, explore AI-powered interpretations, and uncover symbolic insights in a modern, user-friendly app."
+	/>
+</svelte:head>
+
 <div class="min-h-screen bg-[#13111C] relative overflow-hidden">
 	<main class="container mx-auto px-4 py-16 relative z-10">
 		<div class="text-center mb-16 space-y-4">
