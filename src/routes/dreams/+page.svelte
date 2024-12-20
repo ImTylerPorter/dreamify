@@ -20,7 +20,7 @@
 		totalDreams = value;
 	});
 
-	let sentinel: HTMLDivElement;
+	let sentinel = $state<HTMLDivElement | null>(null);
 
 	onMount(() => {
 		const observer = new IntersectionObserver(
