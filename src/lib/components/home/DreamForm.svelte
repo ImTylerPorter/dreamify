@@ -34,7 +34,6 @@
 	}
 
 	async function handleSubmit(_event: SubmitEvent) {
-		isLoading = true;
 		await fetchRemainingDreams();
 		if (remainingDreams === 0) {
 			onInterpretationError('You have reached your daily limit of dream interpretations.');
@@ -68,6 +67,7 @@
 <form
 	method="POST"
 	use:enhance={() => {
+		isLoading = true;
 		return async ({ result }) => {
 			handleSubmit(new SubmitEvent('submit'));
 			handleResult({ result });
